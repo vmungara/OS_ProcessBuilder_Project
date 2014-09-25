@@ -15,18 +15,25 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import project.command.Command;
+import project.command.FileCommand;
+import project.command.WdCommand;
+
 /**
  * @author
  *
  */
 public class BatchParser {
 
-	static Batch buildBatch(File batchFile) {
+	static Batch buildBatch(File batchFile) throws ProcessException {
 
 		if (batchFile == null || !batchFile.exists()) {
-
+			throw new ProcessException("cannot find batch file");
 		}
 
+		Batch batchObj = new Batch();
+		Command cmd = null;
+		
 		try {
 
 			FileInputStream fis = new FileInputStream(batchFile);
@@ -41,7 +48,8 @@ public class BatchParser {
 				Node node = nodes.item(idx);
 				if (node.getNodeType() == Node.ELEMENT_NODE) {
 					Element elem = (Element) node;
-					buildCommand(elem);
+					cmd = buildCommand(elem);
+					batchObj.addCommand(cmd);
 				}
 			}
 		} catch (Exception e) {
@@ -50,34 +58,41 @@ public class BatchParser {
 		}
 		
 		// TODO
-		return null;
+		return batchObj;
 	}
 
 	static Command buildCommand(Element elem) throws DOMException,
 			ProcessException {
-
+		Command cmd = null;
 		String cmdName = elem.getNodeName();
 
 		if (cmdName == null) {
 			throw new ProcessException("unable to parse command from "
 					+ elem.getTextContent());
+		
 		} else if ("wd".equalsIgnoreCase(cmdName)) {
 			System.out.println("Parsing wd");
-			// Command cmd = WDCommand.parse(elem);
+			cmd = new WdCommand();
+			cmd.parse(elem);
+		
 		} else if ("file".equalsIgnoreCase(cmdName)) {
 			System.out.println("Parsing file");
-			// Command cmd = FileCommand.parse(elem);
+			cmd = new FileCommand();
+			cmd.parse(elem);
+
+		
 		} else if ("cmd".equalsIgnoreCase(cmdName)) {
 			System.out.println("Parsing cmd");
-			// Command cmd = CmdCommand.parse(elem);
-			// parseCmd(elem); // Example of parsing a cmd element
+			
+		
 		} else if ("pipe".equalsIgnoreCase(cmdName)) {
 			System.out.println("Parsing pipe");
 			// Command cmd = PipeCommand.parse(elem);
+		
 		} else {
 			throw new ProcessException("Unknown command " + cmdName + " from: "
 					+ elem.getBaseURI());
 		}
-		return null;
+		return cmd;
 	}
 }

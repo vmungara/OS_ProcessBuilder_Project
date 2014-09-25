@@ -119,4 +119,8 @@ public class XmlParsing
 			System.out.println("outID: " + outID);
 		}
 	}
+	
+	<AnyType extends Comparable<? super AnyType>> AnyType test(){
+		return null;
+	}
 }
