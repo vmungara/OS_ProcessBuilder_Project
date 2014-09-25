@@ -1,22 +1,13 @@
 package project.command;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.w3c.dom.Element;
 
 import project.ProcessException;
 
 public class FileCommand extends Command {
-
-	private String path;
-
-	public String getPath() {
-		return path;
-	}
-
-	/*
-	 * public void setPath(String path) { this.path = path; }
-	 */
 
 	public FileCommand() {
 
@@ -28,13 +19,18 @@ public class FileCommand extends Command {
 	}
 
 	@Override
-	public void execute(String workingDir) {
+	public void execute(String workingDir) throws ProcessException {
 		// check if file exists?
-		/*File file = new File(workingDir, path);
-		
+		File file = new File(workingDir, path);
+
 		if (!file.exists()) {
-			file.createNewFile();
-		}*/
+			System.out.println("creating new file "+file);
+			try {
+				file.createNewFile();
+			} catch (IOException e) {
+				throw new ProcessException("cannot create file " + file);
+			}
+		}
 	}
 
 	@Override
@@ -46,11 +42,11 @@ public class FileCommand extends Command {
 
 	private void validateFields() throws ProcessException {
 
-		if (id != null && !id.isEmpty()) {
+		if (id == null || id.isEmpty()) {
 			throw new ProcessException("id is not provided for element: cmd");
 		}
 
-		if (path != null && !path.isEmpty()) {
+		if (path == null || path.isEmpty()) {
 			throw new ProcessException("path is not provided for element: cmd");
 		}
 	}

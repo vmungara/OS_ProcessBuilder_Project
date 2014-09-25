@@ -15,12 +15,14 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import project.command.CmdCommand;
 import project.command.Command;
 import project.command.FileCommand;
+import project.command.PipeCommand;
 import project.command.WdCommand;
 
 /**
- * @author
+ * @author 
  *
  */
 public class BatchParser {
@@ -28,10 +30,10 @@ public class BatchParser {
 	static Batch buildBatch(File batchFile) throws ProcessException {
 
 		if (batchFile == null || !batchFile.exists()) {
-			throw new ProcessException("cannot find batch file");
+			throw new ProcessException("cannot find batch file at "+batchFile);
 		}
 
-		Batch batchObj = new Batch();
+		Batch batchObj = Batch.getInstance();
 		Command cmd = null;
 		
 		try {
@@ -74,6 +76,7 @@ public class BatchParser {
 			System.out.println("Parsing wd");
 			cmd = new WdCommand();
 			cmd.parse(elem);
+			
 		
 		} else if ("file".equalsIgnoreCase(cmdName)) {
 			System.out.println("Parsing file");
@@ -83,11 +86,13 @@ public class BatchParser {
 		
 		} else if ("cmd".equalsIgnoreCase(cmdName)) {
 			System.out.println("Parsing cmd");
-			
+			cmd = new CmdCommand();
+			cmd.parse(elem);
 		
 		} else if ("pipe".equalsIgnoreCase(cmdName)) {
 			System.out.println("Parsing pipe");
-			// Command cmd = PipeCommand.parse(elem);
+			cmd = new PipeCommand();
+			cmd.parse(elem);
 		
 		} else {
 			throw new ProcessException("Unknown command " + cmdName + " from: "

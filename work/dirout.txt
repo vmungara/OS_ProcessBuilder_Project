@@ -1,0 +1,12 @@
+ Volume in drive D is Data
+ Volume Serial Number is 5284-87C9
+
+ Directory of D:\drive\eworkspace\helloworld\OS_ProcessBuilderProject\work
+
+09/25/2014  06:35 PM    <DIR>          .
+09/25/2014  06:35 PM    <DIR>          ..
+09/19/2014  04:21 PM               147 batch1.xml
+09/25/2014  06:35 PM                 0 dirout.txt
+09/25/2014  06:35 PM                 0 error.txt
+               3 File(s)            147 bytes
+               2 Dir(s)  17,853,558,784 bytes free

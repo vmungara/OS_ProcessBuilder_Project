@@ -16,6 +16,7 @@ import project.ProcessException;
 public abstract class Command {
 
 	protected String id;
+	protected String path;
 	
 	public abstract String describe();
 
@@ -27,8 +28,17 @@ public abstract class Command {
 		return id;
 	}
 
-	public void setId(String id) {
+/*	public void setId(String id) {
 		this.id = id;
 	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}*/
+
+	public String getPath() {
+		return path;
+	}
+
 
 }
